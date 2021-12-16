@@ -1,3 +1,4 @@
+using System.Reflection;
 using Core.Entites;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +14,19 @@ namespace Infrastructure.Data
         }
         #endregion
 
-
         #region Properties
-        public DbSet<Product> prodducts { get; set; }
+        public DbSet<ProductType> productTypes { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         #endregion
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
     }
 }

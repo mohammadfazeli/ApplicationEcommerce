@@ -1,28 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.migrations
+namespace Infrastructure.data.migrations
 {
-    public partial class changeProduct : Migration
+    public partial class EditProductEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "prodducts",
+                name: "ImageUrl",
+                table: "Products",
                 type: "TEXT",
                 nullable: true,
-                oldClrType: typeof(int),
-                oldType: "INTEGER");
+                oldClrType: typeof(decimal),
+                oldType: "TEXT");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
-                name: "Name",
-                table: "prodducts",
-                type: "INTEGER",
+            migrationBuilder.AlterColumn<decimal>(
+                name: "ImageUrl",
+                table: "Products",
+                type: "TEXT",
                 nullable: false,
-                defaultValue: 0,
+                defaultValue: 0m,
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldNullable: true);
