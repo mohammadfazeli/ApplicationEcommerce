@@ -31,7 +31,7 @@ namespace Api.Controllers
 
             if (product == null)
                 return NotFound();
-            return Ok($"product name is : {product.Name} .");
+            return Ok(product);
         }
     }
 }

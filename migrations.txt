@@ -1,1 +1,7 @@
-dotnet ef migrations add initial -p Infrastructure -s api -o data/migrations
+add migration
+
+dotnet ef migrations add [name] -p Infrastructure -s api -o data/migrations
+
+update database
+
+dotnet ef database update -p infrastructure -s api
