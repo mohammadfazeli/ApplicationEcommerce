@@ -1,5 +1,8 @@
+using Api.Helper;
 using Core.InterFace;
+using Core.Specefication;
 using Infrastructure.Data;
+using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +28,10 @@ namespace Api
         {
 
             services.AddScoped<IProductRepository, ProductRepository>();
-            
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(ISpecefication<>), typeof(BaseSpecefication<>));
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
             services.AddControllers();
             // services.AddDbContext<StoreContext>(x=>x.UseSqlite(s=>s.))
             services.AddDbContext<StoreContext>(s =>
@@ -50,7 +56,7 @@ namespace Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
