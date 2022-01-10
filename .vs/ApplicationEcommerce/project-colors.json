@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "a37d4c45-085d-450e-984b-cbb029fcd119": {
+      "ProjectGuid": "a37d4c45-085d-450e-984b-cbb029fcd119",
+      "DisplayName": "Api",
+      "ColorIndex": 0
+    },
+    "a819c796-184d-42ce-8c34-8d7d52f2a7cb": {
+      "ProjectGuid": "a819c796-184d-42ce-8c34-8d7d52f2a7cb",
+      "DisplayName": "Infrastructure",
+      "ColorIndex": 1
+    },
+    "bf1cbf6f-2606-4c3b-a30e-c19e56426172": {
+      "ProjectGuid": "bf1cbf6f-2606-4c3b-a30e-c19e56426172",
+      "DisplayName": "Core",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

@@ -1,21 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Api.DTos;
+using Api.Errors;
 using AutoMapper;
 using Core.Entites;
 using Core.InterFace;
 using Core.Specefication;
 using Core.Specefication.Product;
 using Infrastructure.Data.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseController
     {
         private readonly IProductRepository _ProductRepository;
         private readonly IRepository<Product> _ProductRepos;
@@ -29,35 +27,28 @@ namespace Api.Controllers
             IMapper mapper)
         {
             _productSpecefication = productSpecefication;
-            this._mapper = mapper;
+            _mapper = mapper;
             _ProductRepository = ProductRepository;
             _ProductRepos = Productrepos;
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(ProductDTO), statusCode: StatusCodes.Status200OK)]
         public async Task<ActionResult<List<ProductDTO>>> GetProducts()
         {
-            // var products = await _ProductRepository.GetProductsAsync();
             var products = await _ProductRepos.GetAllAsync(new ProductSpecefication());
-            // Expression<Func<Product, object>> brand = s => s.Brand;
-            // Expression<Func<Product, object>> productType = s => s.ProductType;
-            // var products = await _ProductRepos.GetAllAsync(
-            //     new ProductSpecefication(
-            //         x => (x.Id == 5),
-            //     new List<Expression<Func<Product, object>>>()
-            //     {
-            //       brand,
-            //       productType
-            //     }));
             var item = _mapper.Map<List<Product>, List<ProductDTO>>(products);
             return Ok(item);
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductDTO), statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), statusCode: StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProductDTO>> GetProduct(int id)
         {
             // var product = await _ProductRepository.GetProductByIdAsync(id);
             var product = await _ProductRepos.GetAync(new ProductSpecefication(x => x.Id == id));
+            var x = product.Price;
             if (product == null)
                 return NotFound();
             var item = _mapper.Map<Product, ProductDTO>(product);

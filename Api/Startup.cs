@@ -1,15 +1,12 @@
 using Api.Helper;
-using Core.InterFace;
-using Core.Specefication;
+using Api.Helper.Extentions;
 using Infrastructure.Data;
-using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace Api
 {
@@ -22,39 +19,29 @@ namespace Api
             _config = config;
         }
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(ISpecefication<>), typeof(BaseSpecefication<>));
+            services.ConfigDependecyInjection();
             services.AddAutoMapper(typeof(AutoMapperProfile));
-
             services.AddControllers();
-            // services.AddDbContext<StoreContext>(x=>x.UseSqlite(s=>s.))
-            services.AddDbContext<StoreContext>(s =>
-               s.UseSqlite(_config.GetConnectionString("SqliteConnection")));
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
-            });
+            services.AddDbContext<StoreContext>(s => s.UseSqlite(_config.GetConnectionString("SqliteConnection")));
+            services.ConfigSwaggerService();
+            services.ConfigErrorRespone();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCustomMiddelware();
+            app.UseConfigApplicationSwagger();
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
             }
 
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseStaticFiles();
             app.UseAuthorization();
