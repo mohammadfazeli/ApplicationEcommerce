@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using static Core.Enums.Enums;
 
 namespace Core.Specefication
 {
@@ -11,6 +12,10 @@ namespace Core.Specefication
 
         public List<Expression<Func<T, object>>> Includes { get; } =
          new List<Expression<Func<T, object>>>();
+
+        public Expression<Func<T, object>> OrderBy { get; private set; } 
+
+        public OrderTypeEnum orderTypeEnum { get; private set; } 
 
         public BaseSpecefication()
         {
@@ -35,6 +40,10 @@ namespace Core.Specefication
         {
             Includes.Add(include);
         }
-
+        protected void AddOrder(Expression<Func<T, object>> orderBy ,  OrderTypeEnum orderType)
+        {
+            OrderBy = orderBy;
+            orderTypeEnum=orderType;
+        }
     }
 }

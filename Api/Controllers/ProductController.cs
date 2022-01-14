@@ -1,5 +1,6 @@
 using Api.DTos;
 using Api.Errors;
+using Api.Helper;
 using AutoMapper;
 using Core.Entites;
 using Core.InterFace;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Core.Enums.Enums;
 
 namespace Api.Controllers
 {
@@ -36,7 +38,8 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(ProductDTO), statusCode: StatusCodes.Status200OK)]
         public async Task<ActionResult<List<ProductDTO>>> GetProducts()
         {
-            var products = await _ProductRepos.GetAllAsync(new ProductSpecefication());
+
+            var products = await _ProductRepos.GetAllAsync(new ProductSpecefication(new Order(nameof(Product.Id), OrderTypeEnum.Acs)));
             var item = _mapper.Map<List<Product>, List<ProductDTO>>(products);
             return Ok(item);
         }

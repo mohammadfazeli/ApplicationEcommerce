@@ -3,6 +3,7 @@ using System.Linq;
 using Core.Entites;
 using Core.Specefication;
 using Microsoft.EntityFrameworkCore;
+using static Core.Enums.Enums;
 
 namespace Infrastructure.Data
 {
@@ -13,20 +14,13 @@ namespace Infrastructure.Data
         ISpecefication<TEntity> spec)
         {
             var query = inputQuery;
-            if (spec.Predicate != null)
-            {
-                query = query.Where(spec.Predicate);
-            }
 
-            //1
-            // if (spec.Includes.Any())
-            // {
-            //     foreach (var item in spec.Includes)
-            //     {
-            //         query = query.Include(item);
-            //     }
-            // }
-            //2
+            if (spec.Predicate != null)
+                query = query.Where(spec.Predicate);
+
+            if (spec.OrderBy != null)
+                query = spec.orderTypeEnum == OrderTypeEnum.Acs ? query.OrderBy(spec.OrderBy) : query.OrderByDescending(spec.OrderBy);
+
             query = spec.Includes.Aggregate(query, (currnet, include) => currnet.Include(include));
 
             return query;
