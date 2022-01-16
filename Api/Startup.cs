@@ -24,6 +24,17 @@ namespace Api
         {
             services.ConfigDependecyInjection();
             services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("AllowAll",
+                        builder =>
+                        {
+                            builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                        });
+                });
             services.AddControllers();
             services.AddDbContext<StoreContext>(s => s.UseSqlite(_config.GetConnectionString("SqliteConnection")));
             services.ConfigSwaggerService();
@@ -35,7 +46,7 @@ namespace Api
         {
             app.UseCustomMiddelware();
             app.UseConfigApplicationSwagger();
-
+            app.UseCors("AllowAll");
             if (env.IsDevelopment())
             {
             }

@@ -39,7 +39,7 @@ namespace Api.Controllers
         public async Task<ActionResult<List<ProductDTO>>> GetProducts()
         {
 
-            var products = await _ProductRepos.GetAllAsync(new ProductSpecefication(new Order(nameof(Product.Id), OrderTypeEnum.Acs)));
+            var products = await _ProductRepos.GetAllAsync(new ProductSpecefication());
             var item = _mapper.Map<List<Product>, List<ProductDTO>>(products);
             return Ok(item);
         }
